@@ -407,13 +407,13 @@ export const FeeManagementPage: React.FC = () => {
             <table className="w-full text-left text-sm text-slate-600">
               <thead className="bg-slate-50/80 text-[11px] uppercase tracking-wider text-slate-500 font-bold border-b border-slate-200">
                 <tr>
-                  <th className="px-5 py-3.5">Student Member</th>
-                  <th className="px-5 py-3.5">Billing Month</th>
-                  <th className="px-5 py-3.5">Total Fee</th>
-                  <th className="px-5 py-3.5">Paid So Far</th>
-                  <th className="px-5 py-3.5">Remaining Due</th>
-                  <th className="px-5 py-3.5">Status</th>
-                  <th className="px-5 py-3.5 text-right">Actions</th>
+                  <th className="px-5 py-3.5 whitespace-nowrap">Student Member</th>
+                  <th className="px-5 py-3.5 whitespace-nowrap">Billing Month</th>
+                  <th className="px-5 py-3.5 whitespace-nowrap">Total Fee</th>
+                  <th className="px-5 py-3.5 whitespace-nowrap">Paid So Far</th>
+                  <th className="px-5 py-3.5 whitespace-nowrap">Remaining Due</th>
+                  <th className="px-5 py-3.5 whitespace-nowrap">Status</th>
+                  <th className="px-5 py-3.5 text-right whitespace-nowrap min-w-[240px]">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -437,7 +437,7 @@ export const FeeManagementPage: React.FC = () => {
                     <React.Fragment key={inv.id}>
                       <tr className="hover:bg-slate-50/70 transition-colors">
                         {/* Student Details (Eliminates Identity Blindness) */}
-                        <td className="px-5 py-3.5">
+                        <td className="px-5 py-3.5 whitespace-nowrap">
                           <div className="flex items-center gap-3">
                             <button
                               type="button"
@@ -487,29 +487,29 @@ export const FeeManagementPage: React.FC = () => {
                         </td>
 
                         {/* Billing Month */}
-                        <td className="px-5 py-3.5 text-xs font-semibold text-slate-700">
+                        <td className="px-5 py-3.5 text-xs font-semibold text-slate-700 whitespace-nowrap">
                           {formatMonth(inv.billing_month)}
                         </td>
 
                         {/* Amount Due */}
-                        <td className="px-5 py-3.5 font-bold text-slate-900">
+                        <td className="px-5 py-3.5 font-bold text-slate-900 whitespace-nowrap">
                           {formatINR(inv.amount_due)}
                         </td>
 
                         {/* Paid So Far */}
-                        <td className="px-5 py-3.5 font-semibold text-emerald-600">
+                        <td className="px-5 py-3.5 font-semibold text-emerald-600 whitespace-nowrap">
                           {formatINR(inv.total_paid || 0)}
                         </td>
 
                         {/* Remaining Due */}
-                        <td className="px-5 py-3.5 font-extrabold">
+                        <td className="px-5 py-3.5 font-extrabold whitespace-nowrap">
                           <span className={remainingDue > 0 ? 'text-amber-600 text-sm' : 'text-slate-700'}>
                             {formatINR(remainingDue)}
                           </span>
                         </td>
 
                         {/* Status Badge */}
-                        <td className="px-5 py-3.5">
+                        <td className="px-5 py-3.5 whitespace-nowrap">
                           <Badge
                             variant={
                               inv.status === 'paid'
@@ -525,17 +525,27 @@ export const FeeManagementPage: React.FC = () => {
                         </td>
 
                         {/* Actions */}
-                        <td className="px-5 py-3.5 text-right">
+                        <td className="px-5 py-3.5 text-right whitespace-nowrap min-w-[240px]">
                           <div className="flex items-center justify-end gap-2">
-                            {paymentsCount > 0 && (
+                            {paymentsCount > 0 ? (
                               <button
                                 type="button"
                                 onClick={() => handleOpenReceipt(inv, inv.payments![inv.payments!.length - 1])}
-                                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-2xs"
+                                className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-2xs whitespace-nowrap shrink-0 h-8"
                                 title="View latest payment receipt"
                               >
                                 <Printer className="w-3.5 h-3.5 text-slate-500" />
-                                <span className="hidden sm:inline">Receipt</span>
+                                <span>Receipt</span>
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                disabled
+                                className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200/50 text-xs font-semibold text-slate-300 bg-slate-50/50 cursor-not-allowed whitespace-nowrap shrink-0 h-8 opacity-60"
+                                title="No payment receipts recorded yet"
+                              >
+                                <Printer className="w-3.5 h-3.5 text-slate-300" />
+                                <span>Receipt</span>
                               </button>
                             )}
 
@@ -543,14 +553,14 @@ export const FeeManagementPage: React.FC = () => {
                               type="button"
                               disabled={isPaid}
                               onClick={() => handleOpenPayment(inv)}
-                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                              className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 transition-all h-8 w-[140px] ${
                                 isPaid
-                                  ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                                  ? 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200/60'
                                   : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-xs'
                               }`}
                             >
                               <CreditCard className="w-3.5 h-3.5" />
-                              {isPaid ? 'Settled' : 'Record Payment'}
+                              <span>{isPaid ? 'Settled' : 'Record Payment'}</span>
                             </button>
                           </div>
                         </td>
